@@ -15,7 +15,9 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products',middlewares.checkCreateProductInputMiddleware,
+app.post('/products',
+  middlewares.checkCreateProductInput,
+  middlewares.checkRepeatedName,
   productsController.createProduct);
 
 app.use(errorMiddleware);

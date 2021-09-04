@@ -51,22 +51,22 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
       });
   });
 
-  // it('Será validado que não é possível criar um produto com o mesmo nomede outro já existente', async () => {
-  //   await frisby
-  //     .post(`${url}/products/`, {
-  //       name: 'Martelo de Thor',
-  //       quantity: 100,
-  //     })
-  //     .expect('status', 422)
-  //     .then((res) => {
-  //       let { body } = res;
-  //       body = JSON.parse(body);
-  //       const error = body.err.code;
-  //       const { message } = body.err;
-  //       expect(error).toEqual('invalid_data');
-  //       expect(message).toEqual('Product already exists');
-  //     });
-  // });
+  it('Será validado que não é possível criar um produto com o mesmo nomede outro já existente', async () => {
+    await frisby
+      .post(`${url}/products/`, {
+        name: 'Martelo de Thor',
+        quantity: 100,
+      })
+      .expect('status', 422)
+      .then((res) => {
+        let { body } = res;
+        body = JSON.parse(body);
+        const error = body.err.code;
+        const { message } = body.err;
+        expect(error).toEqual('invalid_data');
+        expect(message).toEqual('Product already exists');
+      });
+  });
 
   // it('Será validado que não é possível criar um produto com quantidade menor que zero', async () => {
   //   await frisby

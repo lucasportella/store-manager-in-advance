@@ -7,6 +7,13 @@ const createProduct = async (name, quantity) => {
   return { _id, name, quantity };
 };
 
+const findName = async (name) => {
+  const db = await connection();
+  const result = await db.collection('products').findOne({name});
+  return result;
+};
+
 module.exports = {
   createProduct,
+  findName,
 };

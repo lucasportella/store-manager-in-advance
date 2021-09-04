@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const minLength = 5;
 
 const checkCreateProductInput = (name, quantity) => 

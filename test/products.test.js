@@ -68,56 +68,56 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
       });
   });
 
-  // it('Será validado que não é possível criar um produto com quantidade menor que zero', async () => {
-  //   await frisby
-  //     .post(`${url}/products`, {
-  //       name: 'Produto do Batista',
-  //       quantity: -1,
-  //     })
-  //     .expect('status', 422)
-  //     .then((res) => {
-  //       let { body } = res;
-  //       body = JSON.parse(body);
-  //       const error = body.err.code;
-  //       const { message } = body.err;
-  //       expect(error).toEqual('invalid_data');
-  //       expect(message).toEqual('"quantity" must be larger than or equal to 1');
-  //     });
-  // });
+  it('Será validado que não é possível criar um produto com quantidade menor que zero', async () => {
+    await frisby
+      .post(`${url}/products`, {
+        name: 'Produto do Batista',
+        quantity: -1,
+      })
+      .expect('status', 422)
+      .then((res) => {
+        let { body } = res;
+        body = JSON.parse(body);
+        const error = body.err.code;
+        const { message } = body.err;
+        expect(error).toEqual('invalid_data');
+        expect(message).toEqual('"quantity" must be larger than or equal to 1');
+      });
+  });
 
-  // it('Será validado que não é possível criar um produto com quantidade igual a zero', async () => {
-  //   await frisby
-  //     .post(`${url}/products`, {
-  //       name: 'Produto do Batista',
-  //       quantity: 0,
-  //     })
-  //     .expect('status', 422)
-  //     .then((res) => {
-  //       let { body } = res;
-  //       body = JSON.parse(body);
-  //       const error = body.err.code;
-  //       const { message } = body.err;
-  //       expect(error).toEqual('invalid_data');
-  //       expect(message).toEqual('"quantity" must be larger than or equal to 1');
-  //     });
-  // });
+  it('Será validado que não é possível criar um produto com quantidade igual a zero', async () => {
+    await frisby
+      .post(`${url}/products`, {
+        name: 'Produto do Batista',
+        quantity: 0,
+      })
+      .expect('status', 422)
+      .then((res) => {
+        let { body } = res;
+        body = JSON.parse(body);
+        const error = body.err.code;
+        const { message } = body.err;
+        expect(error).toEqual('invalid_data');
+        expect(message).toEqual('"quantity" must be larger than or equal to 1');
+      });
+  });
 
-  // it('Será validado que não é possível criar um produto com uma string no campo quantidade', async () => {
-  //   await frisby
-  //     .post(`${url}/products`, {
-  //       name: 'Produto do Batista',
-  //       quantity: 'string',
-  //     })
-  //     .expect('status', 422)
-  //     .then((res) => {
-  //       let { body } = res;
-  //       body = JSON.parse(body);
-  //       const error = body.err.code;
-  //       const { message } = body.err;
-  //       expect(error).toEqual('invalid_data');
-  //       expect(message).toEqual('"quantity" must be a number');
-  //     });
-  // });
+  it('Será validado que não é possível criar um produto com uma string no campo quantidade', async () => {
+    await frisby
+      .post(`${url}/products`, {
+        name: 'Produto do Batista',
+        quantity: 'string',
+      })
+      .expect('status', 422)
+      .then((res) => {
+        let { body } = res;
+        body = JSON.parse(body);
+        const error = body.err.code;
+        const { message } = body.err;
+        expect(error).toEqual('invalid_data');
+        expect(message).toEqual('"quantity" must be a number');
+      });
+  });
 
   it('Será validado que é possível criar um produto com sucesso', async () => {
     await frisby

@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const middlewares = require('./middlewares/middlewares');
 
 const productsController = require('./controllers/productsController');
+const middlewares = require('./middlewares/middlewares');
+const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const app = express();
 const defaultPORT = 3000;
@@ -16,6 +17,8 @@ app.get('/', (_request, response) => {
 
 app.post('/products',middlewares.checkCreateProductInputMiddleware,
   productsController.createProduct);
+
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;
  

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const middlewares = require('./middlewares/middlewares');
 
 const productsController = require('./controllers/productsController');
 
@@ -13,7 +14,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products', productsController.createProduct);
+app.post('/products',middlewares.checkCreateProductInputMiddleware,
+  productsController.createProduct);
 
 const PORT = process.env.PORT || defaultPORT;
  

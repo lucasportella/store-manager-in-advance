@@ -9,7 +9,7 @@ const createProduct = async (req, res) => {
 
 const getAll = async (req, res) => {
   const result = await productsService.getAll();
-  return res.status(ok).json(result);
+  return res.status(ok).json({products: result});
 };
 
 const getById = async (req, res) => {

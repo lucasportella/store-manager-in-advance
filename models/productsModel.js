@@ -23,6 +23,7 @@ const getAll = async () => {
 const getById = async (id) => {
   const db = await connection();
   const result = await db.collection('products').findOne(new ObjectId(id));
+  console.log(result);
   return result;
 };
 

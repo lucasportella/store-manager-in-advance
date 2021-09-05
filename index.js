@@ -22,7 +22,9 @@ app.post('/products',
 
 app.get('/products', productsController.getAll);
 
-app.get('/products/:id', productsController.getById);
+app.get('/products/:id',
+  middlewares.checkId,
+  productsController.getById);
 
 app.use(errorMiddleware);
 

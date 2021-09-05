@@ -138,98 +138,98 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
   });
 });
 
-// describe('2 - Crie um endpoint para listar os produtos', () => {
-//   let connection;
-//   let db;
+describe('2 - Crie um endpoint para listar os produtos', () => {
+  let connection;
+  let db;
 
-//   beforeAll(async () => {
-//     connection = await MongoClient.connect(mongoDbUrl, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     db = connection.db('StoreManager');
-//     await db.collection('products').deleteMany({});
-//     await db.collection('sales').deleteMany({});
-//   });
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('StoreManager');
+    await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
+  });
 
-//   beforeEach(async () => {
-//     await db.collection('products').deleteMany({});
-//     await db.collection('sales').deleteMany({});
-//     const products = [{ name: 'Martelo de Thor', quantity: 10 },
-//       { name: 'Traje de encolhimento', quantity: 20 },
-//       { name: 'Escudo do Capitão América', quantity: 30 }];
-//     await db.collection('products').insertMany(products);
-//   });
+  beforeEach(async () => {
+    await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
+    const products = [{ name: 'Martelo de Thor', quantity: 10 },
+      { name: 'Traje de encolhimento', quantity: 20 },
+      { name: 'Escudo do Capitão América', quantity: 30 }];
+    await db.collection('products').insertMany(products);
+  });
 
-//   afterEach(async () => {
-//     await db.collection('products').deleteMany({});
-//   });
+  afterEach(async () => {
+    await db.collection('products').deleteMany({});
+  });
 
-//   afterAll(async () => {
-//     await connection.close();
-//   });
+  afterAll(async () => {
+    await connection.close();
+  });
 
-//   it('Será validado que todos produtos estão sendo retornados', async () => {
-//     await frisby
-//       .get(`${url}/products`)
-//       .expect('status', 200)
-//       .then((res) => {
-//         let { body } = res;
-//         body = JSON.parse(body);
-//         const firstProductName = body.products[0].name;
-//         const firstQuantityProduct = body.products[0].quantity;
-//         const secondProductName = body.products[1].name;
-//         const secondQuantityProduct = body.products[1].quantity;
-//         const thirdProductName = body.products[2].name;
-//         const thirdQuantityProduct = body.products[2].quantity;
+  it('Será validado que todos produtos estão sendo retornados', async () => {
+    await frisby
+      .get(`${url}/products`)
+      .expect('status', 200)
+      .then((res) => {
+        let { body } = res;
+        body = JSON.parse(body);
+        const firstProductName = body.products[0].name;
+        const firstQuantityProduct = body.products[0].quantity;
+        const secondProductName = body.products[1].name;
+        const secondQuantityProduct = body.products[1].quantity;
+        const thirdProductName = body.products[2].name;
+        const thirdQuantityProduct = body.products[2].quantity;
 
-//         expect(firstProductName).toEqual('Martelo de Thor');
-//         expect(firstQuantityProduct).toEqual(10);
-//         expect(secondProductName).toEqual('Traje de encolhimento');
-//         expect(secondQuantityProduct).toEqual(20);
-//         expect(thirdProductName).toEqual('Escudo do Capitão América');
-//         expect(thirdQuantityProduct).toEqual(30);
-//       });
-//   });
+        expect(firstProductName).toEqual('Martelo de Thor');
+        expect(firstQuantityProduct).toEqual(10);
+        expect(secondProductName).toEqual('Traje de encolhimento');
+        expect(secondQuantityProduct).toEqual(20);
+        expect(thirdProductName).toEqual('Escudo do Capitão América');
+        expect(thirdQuantityProduct).toEqual(30);
+      });
+  });
 
-//   it('Será validado que não é possível listar um produto que não existe', async () => {
-//     await frisby.get(`${url}/products/${invalidId}`)
-//       .expect('status', 422)
-//       .then((secondResponse) => {
-//         const { json } = secondResponse;
-//         const error = json.err.code;
-//         const { message } = json.err;
-//         expect(error).toEqual('invalid_data');
-//         expect(message).toEqual('Wrong id format');
-//       });
-//   });
+  it('Será validado que não é possível listar um produto que não existe', async () => {
+    await frisby.get(`${url}/products/${invalidId}`)
+      .expect('status', 422)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        const error = json.err.code;
+        const { message } = json.err;
+        expect(error).toEqual('invalid_data');
+        expect(message).toEqual('Wrong id format');
+      });
+  });
 
-//   it('Será validado que é possível listar um determinado produto', async () => {
-//     let result;
+  it('Será validado que é possível listar um determinado produto', async () => {
+    let result;
 
-//     await frisby
-//       .post(`${url}/products`, {
-//         name: 'Armadura do Homem de Ferro',
-//         quantity: 40,
-//       })
-//       .expect('status', 201)
-//       .then((response) => {
-//         const { body } = response;
-//         result = JSON.parse(body);
-//         responseProductId = result._id;
-//       });
+    await frisby
+      .post(`${url}/products`, {
+        name: 'Armadura do Homem de Ferro',
+        quantity: 40,
+      })
+      .expect('status', 201)
+      .then((response) => {
+        const { body } = response;
+        result = JSON.parse(body);
+        responseProductId = result._id;
+      });
 
-//     await frisby.get(`${url}/products/${responseProductId}`)
-//       .expect('status', 200)
-//       .then((secondResponse) => {
-//         const { json } = secondResponse;
-//         const productName = json.name;
-//         const quantityProduct = json.quantity;
-//         expect(productName).toEqual('Armadura do Homem de Ferro');
-//         expect(quantityProduct).toEqual(40);
-//       });
-//   });
-// });
+    await frisby.get(`${url}/products/${responseProductId}`)
+      .expect('status', 200)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        const productName = json.name;
+        const quantityProduct = json.quantity;
+        expect(productName).toEqual('Armadura do Homem de Ferro');
+        expect(quantityProduct).toEqual(40);
+      });
+  });
+});
 
 // describe('3 - Crie um endpoint para atualizar um produto', () => {
 //   let connection;

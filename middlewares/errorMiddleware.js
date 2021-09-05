@@ -18,6 +18,15 @@ const errorMiddleware = (error, req, res, next) => {
       }
     });
   }
+
+  if (error.isInvalidId) {
+    return res.status(unprocessable_entity).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
 };
 
 module.exports = {

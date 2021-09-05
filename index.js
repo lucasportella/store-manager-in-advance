@@ -44,6 +44,9 @@ app.post('/sales',
   middlewares.checkSale,
   salesController.createSale);
 
+app.get('/sales',
+  salesController.getAllSales);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

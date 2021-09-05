@@ -6,6 +6,12 @@ const createSale = async (salesArray) => {
   return createdSale;
 };
 
+const getAllSales = async () => {
+  const result = await salesModel.getAllSales();
+  return {'sales': result};
+};
+
 module.exports = {
-    createSale,
+  createSale,
+  getAllSales,
 };

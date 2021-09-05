@@ -18,7 +18,8 @@ const checkRepeatedName = async (req, res, next) => {
 const checkId = async ( req, res, next) => {
   const { id } = req.params;
   const validateResult = validators.checkProductIdInput(id);
-  if (validateResult.error) { next({isInvalidId: true, message: 'Wrong id format'});}
+  if (validateResult.error) { 
+    next({isInvalidId: true, message: 'Wrong id format'}); return null;}
 
   const checkResult = await productsService.getById(id);
   if (!checkResult) { next({isInvalidId: true, message: 'Wrong id format'});}

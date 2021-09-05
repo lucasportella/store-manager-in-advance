@@ -31,6 +31,10 @@ app.put('/products/:id',
   middlewares.checkId,
   productsController.updateProduct);
 
+app.delete('/products/:id',
+  middlewares.checkId,
+  productsController.deleteProduct);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

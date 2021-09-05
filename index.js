@@ -41,6 +41,7 @@ app.delete('/products/:id',
 
 
 app.post('/sales',
+  middlewares.checkSale,
   salesController.createMany);
 
 app.use(errorMiddleware);

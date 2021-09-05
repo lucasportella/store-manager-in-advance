@@ -26,8 +26,16 @@ const checkId = async ( req, res, next) => {
   next();
 };
 
+const checkSale =  async ( req, res, next) => {
+  const saleArray = req.body;
+  const result = saleArray.every((sale) => validators.checkSaleQuantity(sale.quantity));
+  if (!result) { next({})}
+  return result;
+};
+
 module.exports = {
   checkCreateProductInput,
   checkRepeatedName,
   checkId,
+  checkSale,
 };

@@ -26,6 +26,8 @@ app.get('/products/:id',
   middlewares.checkId,
   productsController.getById);
 
+app.put('/products/:id', productsController.updateProduct);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

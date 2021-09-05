@@ -20,6 +20,10 @@ app.post('/products',
   middlewares.checkRepeatedName,
   productsController.createProduct);
 
+app.get('/products', productsController.getAll);
+
+app.get('/products/:id', productsController.getById);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

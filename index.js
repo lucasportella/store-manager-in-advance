@@ -42,7 +42,7 @@ app.delete('/products/:id',
 
 app.post('/sales',
   middlewares.checkSale,
-  salesController.createMany);
+  salesController.createSale);
 
 app.use(errorMiddleware);
 

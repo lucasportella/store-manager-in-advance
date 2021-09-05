@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 const middlewares = require('./middlewares/middlewares');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
@@ -34,6 +35,13 @@ app.put('/products/:id',
 app.delete('/products/:id',
   middlewares.checkId,
   productsController.deleteProduct);
+
+
+
+
+
+app.post('/sales',
+  salesController.createMany);
 
 app.use(errorMiddleware);
 

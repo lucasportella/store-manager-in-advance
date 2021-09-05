@@ -26,7 +26,10 @@ app.get('/products/:id',
   middlewares.checkId,
   productsController.getById);
 
-app.put('/products/:id', productsController.updateProduct);
+app.put('/products/:id',
+  middlewares.checkCreateProductInput,
+  middlewares.checkId,
+  productsController.updateProduct);
 
 app.use(errorMiddleware);
 

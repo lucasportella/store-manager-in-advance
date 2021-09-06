@@ -14,6 +14,7 @@ const findName = async (name) => {
   return result;
 };
 
+
 const getAll = async () => {
   const db = await connection();
   const result = await db.collection('products').find().toArray();
@@ -40,6 +41,15 @@ const deleteProduct = async (id) => {
   const deletedData = await getById(id);
   await db.collection('products').deleteOne({_id: ObjectId(id)});
   return deletedData;
+};
+
+const updateQuantityAfterCreate = async (createdSale) => {
+  const saleArray = createdSale.ops[0].itensSold;
+  await saleArray.forEach( async (product) => {
+    const outDatedProduct = await getById(product.productId);
+    const updatedQuantity = outDatedProduct.quantity - product.quantity;
+    await updateProduct(outDatedProduct.name, updatedQuantity, outDatedProduct._id);
+  });
 };
 
 const updateQuantityAfterDelete = async (deletedSale) => {
@@ -69,5 +79,6 @@ module.exports = {
   getById,
   updateProduct,
   deleteProduct,
+  updateQuantityAfterCreate,
   updateQuantityAfterDelete,
 };

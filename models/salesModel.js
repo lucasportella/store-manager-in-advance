@@ -6,6 +6,7 @@ const productsModel = require('./productsModel');
 const createSale = async (salesArray) => {
   const db = await connection();
   const result = await db.collection('sales').insertOne({'itensSold': salesArray});
+  await productsModel.updateQuantityAfterCreate(result);
   return result;
 };
 

@@ -32,9 +32,17 @@ const updateSale = async (id, productId, quantity) => {
   return updatedSale;
 };
 
+const deleteSale = async (id) => {
+  const db = await connection();
+  const deletedData = await getSaleById(id);
+  await db.collection('sales').deleteOne({_id: ObjectId(id)});
+  return deletedData;
+};
+
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };

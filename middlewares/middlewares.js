@@ -51,10 +51,26 @@ const checkSaleId = async (req, res, next) => {
   next();
 };
 
+const checkSaleIdFormat = async(req, res, next) => {
+  const { id } = req.params;
+  const validateResult = validators.checkIdInput(id);
+  if (validateResult.error) {
+    next({isSaleIdFormatInvalid: true, message: 'Wrong sale ID format'});
+    return null;
+  }
+  const result = await salesService.getSaleById(id);
+  if (!result) {
+    next({isSaleIdInvalid: true, message: 'Sale not found'});
+    return null;
+  }
+  next();
+};
+
 module.exports = {
   checkCreateProductInput,
   checkRepeatedName,
   checkId,
   checkSale,
   checkSaleId,
+  checkSaleIdFormat,
 };

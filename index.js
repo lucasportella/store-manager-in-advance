@@ -56,6 +56,12 @@ app.put('/sales/:id',
   salesController.updateSale,
 );
 
+app.delete('/sales/:id',
+  middlewares.checkSaleIdFormat,
+  salesController.deleteSale,
+
+);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

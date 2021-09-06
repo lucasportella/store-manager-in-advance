@@ -773,65 +773,65 @@ describe('9 - Atualize a quantidade de produtos', () => {
   });
 });
 
-// describe('10 - Valide a quantidade de produtos', () => {
-//   let connection;
-//   let db;
+describe('10 - Valide a quantidade de produtos', () => {
+  let connection;
+  let db;
 
-//   beforeAll(async () => {
-//     connection = await MongoClient.connect(mongoDbUrl, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     db = connection.db('StoreManager');
-//     await db.collection('products').deleteMany({});
-//     await db.collection('sales').deleteMany({});
-//   });
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('StoreManager');
+    await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
+  });
 
-//   beforeEach(async () => {
-//     await db.collection('products').deleteMany({});
-//     await db.collection('sales').deleteMany({});
-//     const products = [
-//       { name: 'Martelo de Thor', quantity: 10 },
-//       { name: 'Traje de encolhimento', quantity: 20 },
-//       { name: 'Escudo do Capitão América', quantity: 30 },
-//     ];
-//     await db.collection('products').insertMany(products);
-//   });
+  beforeEach(async () => {
+    await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
+    const products = [
+      { name: 'Martelo de Thor', quantity: 10 },
+      { name: 'Traje de encolhimento', quantity: 20 },
+      { name: 'Escudo do Capitão América', quantity: 30 },
+    ];
+    await db.collection('products').insertMany(products);
+  });
 
-//   afterEach(async () => {
-//     await db.collection('products').deleteMany({});
-//     await db.collection('sales').deleteMany({});
-//   });
+  afterEach(async () => {
+    await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
+  });
 
-//   afterAll(async () => {
-//     await connection.close();
-//   });
+  afterAll(async () => {
+    await connection.close();
+  });
 
-//   it('Será validado que o estoque do produto nunca fique com a quantidade menor que zero', async () => {
-//     let result;
-//     let responseProductId;
+  it('Será validado que o estoque do produto nunca fique com a quantidade menor que zero', async () => {
+    let result;
+    let responseProductId;
 
-//     await frisby
-//       .get(`${url}/products/`)
-//       .expect('status', 200)
-//       .then((response) => {
-//         const { body } = response;
-//         result = JSON.parse(body);
-//         responseProductId = result.products[0]._id;
-//       });
+    await frisby
+      .get(`${url}/products/`)
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        result = JSON.parse(body);
+        responseProductId = result.products[0]._id;
+      });
 
-//     await frisby
-//       .post(`${url}/sales/`, [
-//         {
-//           productId: responseProductId,
-//           quantity: 100,
-//         },
-//       ])
-//       .expect('status', 404)
-//       .then((responseSales) => {
-//         const { json } = responseSales;
-//         expect(json.err.code).toBe('stock_problem');
-//         expect(json.err.message).toBe('Such amount is not permitted to sell');
-//       });
-//   });
-// });
+    await frisby
+      .post(`${url}/sales/`, [
+        {
+          productId: responseProductId,
+          quantity: 100,
+        },
+      ])
+      .expect('status', 404)
+      .then((responseSales) => {
+        const { json } = responseSales;
+        expect(json.err.code).toBe('stock_problem');
+        expect(json.err.message).toBe('Such amount is not permitted to sell');
+      });
+  });
+});

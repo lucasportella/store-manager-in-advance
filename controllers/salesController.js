@@ -1,8 +1,15 @@
 const salesService = require('../services/salesService');
-const { created, ok } = require('../utils/statusCodes');
+const { ok, not_found } = require('../utils/statusCodes');
 
 const createSale = async (req, res) => {
   const result = await salesService.createSale(req.body);
+  if (result.error) {return res.status(not_found).json({
+    err: {
+      code: 'stock_problem',
+      message: result.error.message
+    }
+  });}
+  
   return res.status(ok).json(result);
 };
 

@@ -281,56 +281,56 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 
-  // it('Será validado que é possível listar uma determinada venda', async () => {
-  //   let result;
-  //   let resultSales;
-  //   let resultSalesId;
+  it('Será validado que é possível listar uma determinada venda', async () => {
+    let result;
+    let resultSales;
+    let resultSalesId;
 
-  //   await frisby
-  //     .get(`${url}/products/`)
-  //     .expect('status', 200)
-  //     .then((response) => {
-  //       const { body } = response;
-  //       result = JSON.parse(body);
-  //     });
+    await frisby
+      .get(`${url}/products/`)
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        result = JSON.parse(body);
+      });
 
-  //   await frisby
-  //     .post(`${url}/sales/`, [
-  //       {
-  //         productId: result.products[0]._id,
-  //         quantity: 2,
-  //       },
-  //       {
-  //         productId: result.products[1]._id,
-  //         quantity: 6,
-  //       },
-  //     ])
-  //     .expect('status', 200)
-  //     .then((responseSales) => {
-  //       const { body } = responseSales;
-  //       resultSales = JSON.parse(body);
-  //       resultSalesId = resultSales._id;
-  //     });
+    await frisby
+      .post(`${url}/sales/`, [
+        {
+          productId: result.products[0]._id,
+          quantity: 2,
+        },
+        {
+          productId: result.products[1]._id,
+          quantity: 6,
+        },
+      ])
+      .expect('status', 200)
+      .then((responseSales) => {
+        const { body } = responseSales;
+        resultSales = JSON.parse(body);
+        resultSalesId = resultSales._id;
+      });
 
-  //   await frisby
-  //     .get(`${url}/sales/`)
-  //     .expect('status', 200)
-  //     .then((responseOne) => {
-  //       const { body } = responseOne;
-  //       const responseAll = JSON.parse(body);
-  //       const idSales = responseAll.sales[0]._id;
-  //       const idFirstProductSales = responseAll.sales[0].itensSold[0].productId;
-  //       const quantityFirstProductSales = responseAll.sales[0].itensSold[0].quantity;
-  //       const idSecondProductSales = responseAll.sales[0].itensSold[1].productId;
-  //       const quantitySecondProductSales = responseAll.sales[0].itensSold[1].quantity;
+    await frisby
+      .get(`${url}/sales/`)
+      .expect('status', 200)
+      .then((responseOne) => {
+        const { body } = responseOne;
+        const responseAll = JSON.parse(body);
+        const idSales = responseAll.sales[0]._id;
+        const idFirstProductSales = responseAll.sales[0].itensSold[0].productId;
+        const quantityFirstProductSales = responseAll.sales[0].itensSold[0].quantity;
+        const idSecondProductSales = responseAll.sales[0].itensSold[1].productId;
+        const quantitySecondProductSales = responseAll.sales[0].itensSold[1].quantity;
 
-  //       expect(idSales).toBe(resultSales._id);
-  //       expect(idFirstProductSales).toBe(result.products[0]._id);
-  //       expect(quantityFirstProductSales).toBe(2);
-  //       expect(idSecondProductSales).toBe(result.products[1]._id);
-  //       expect(quantitySecondProductSales).toBe(6);
-  //     });
-  // });
+        expect(idSales).toBe(resultSales._id);
+        expect(idFirstProductSales).toBe(result.products[0]._id);
+        expect(quantityFirstProductSales).toBe(2);
+        expect(idSecondProductSales).toBe(result.products[1]._id);
+        expect(quantitySecondProductSales).toBe(6);
+      });
+  });
 
   // it('Será validado que não é possível listar uma venda inexistente', async () => {
   //   await frisby

@@ -20,8 +20,21 @@ const getSaleById = async (id) => {
   return result;
 };
 
+const updateSale = async (id, productId, quantity) => {
+  const db = await connection();;
+  await db.collection('sales')
+    .updateOne(
+      {_id: ObjectId(id)},
+      {$set: { 'itensSold.$[element].quantity': quantity}},
+      {arrayFilters: [ {'element.productId': productId}]}
+    );
+  const updatedSale = await getSaleById(id);
+  return updatedSale;
+};
+
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
+  updateSale,
 };

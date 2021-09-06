@@ -51,6 +51,10 @@ app.get('/sales/:id',
   middlewares.checkSaleId,
   salesController.getSaleById);
 
+app.put('/sales/:id',
+  salesController.updateSale,
+);
+
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || defaultPORT;

@@ -48,6 +48,7 @@ app.get('/sales',
   salesController.getAllSales);
 
 app.get('/sales/:id',
+  middlewares.checkSaleId,
   salesController.getSaleById);
 
 app.use(errorMiddleware);

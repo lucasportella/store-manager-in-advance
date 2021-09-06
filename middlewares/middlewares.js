@@ -1,5 +1,6 @@
 const validators = require('./validators/validators');
 const productsService = require('../services/productsService');
+const salesService = require('../services/salesService');
 
 const checkCreateProductInput = async (req, res, next ) => {
   const { name, quantity } = req.body;
@@ -17,7 +18,7 @@ const checkRepeatedName = async (req, res, next) => {
 
 const checkId = async ( req, res, next) => {
   const { id } = req.params;
-  const validateResult = validators.checkProductIdInput(id);
+  const validateResult = validators.checkIdInput(id);
   if (validateResult.error) { 
     next({isInvalidId: true, message: 'Wrong id format'}); return null;}
 
@@ -35,9 +36,25 @@ const checkSale =  async ( req, res, next) => {
   next();
 };
 
+const checkSaleId = async (req, res, next) => {
+  const { id } = req.params;
+  const validateResult = validators.checkIdInput(id);
+  if (validateResult.error) {
+    next({isSaleIdInvalid: true, message: 'Sale not found'});
+    return null;
+  }
+  const result = await salesService.getSaleById(id);
+  if (!result) {
+    next({isSaleIdInvalid: true, message: 'Sale not found'});
+    return null;
+  }
+  next();
+};
+
 module.exports = {
   checkCreateProductInput,
   checkRepeatedName,
   checkId,
   checkSale,
+  checkSaleId,
 };

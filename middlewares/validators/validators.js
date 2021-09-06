@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi');
 const minNameLength = 5;
 const minIdLength = 24;
+const maxIdLength = 24;
 
 const checkCreateProductInput = (name, quantity) => 
   Joi.object({
@@ -8,8 +9,8 @@ const checkCreateProductInput = (name, quantity) =>
     quantity: Joi.number().min(1).not().empty().required()
   }).validate({name, quantity});
 
-const checkProductIdInput = (id) => Joi.object({
-  id:Joi.string().not().empty().min(minIdLength).required()
+const checkIdInput = (id) => Joi.object({
+  id:Joi.string().not().empty().min(minIdLength).max(maxIdLength).required()
 }).validate({id});
 
 const checkSaleQuantity = (quantity) => { 
@@ -24,6 +25,6 @@ const checkSaleQuantity = (quantity) => {
 
 module.exports = {
   checkCreateProductInput,
-  checkProductIdInput,
+  checkIdInput,
   checkSaleQuantity,
 };

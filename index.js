@@ -52,6 +52,7 @@ app.get('/sales/:id',
   salesController.getSaleById);
 
 app.put('/sales/:id',
+  middlewares.checkSale,
   salesController.updateSale,
 );
 

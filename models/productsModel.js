@@ -23,6 +23,7 @@ const getAll = async () => {
 const getById = async (id) => {
   const db = await connection();
   const result = await db.collection('products').findOne(new ObjectId(id));
+  console.log(result);
   return result;
 };
 
@@ -41,6 +42,25 @@ const deleteProduct = async (id) => {
   return deletedData;
 };
 
+const updateQuantityAfterDelete = async (deletedSale) => {
+  const { _id, itensSold } = deletedSale;
+  await itensSold.forEach(async (product) => {
+    const outDatedProduct = await getById(product.productId);
+    const updatedQuantity = outDatedProduct.quantity + product.quantity;
+    await updateProduct(outDatedProduct.name, updatedQuantity, outDatedProduct._id);
+  });
+
+  // { _id: 613616ebcdcefa3803d75339, name: 'biscoito', quantity: 10 }
+
+  // {
+  //   _id: 61362e64e22428449aac24d1,
+  //   itensSold: [
+  //     { productId: '613616ebcdcefa3803d75339', quantity: 2 },
+  //     { productId: '61361702cdcefa3803d7533a', quantity: 1 }
+  //   ]
+  // }
+
+};
 
 module.exports = {
   createProduct,
@@ -49,4 +69,5 @@ module.exports = {
   getById,
   updateProduct,
   deleteProduct,
+  updateQuantityAfterDelete,
 };

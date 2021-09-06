@@ -1,6 +1,7 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
-const connect = require('mongodb');
+const productsModel = require('./productsModel');
+
 
 const createSale = async (salesArray) => {
   const db = await connection();
@@ -36,8 +37,10 @@ const deleteSale = async (id) => {
   const db = await connection();
   const deletedData = await getSaleById(id);
   await db.collection('sales').deleteOne({_id: ObjectId(id)});
+  await productsModel.updateQuantityAfterDelete(deletedData);
   return deletedData;
 };
+
 
 module.exports = {
   createSale,

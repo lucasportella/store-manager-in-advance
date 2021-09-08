@@ -30,32 +30,32 @@ describe('11 - Escreva testes para seus models', () => {
   });
 });
 
-// describe('12 - Escreva testes para seus services', () => {
-//   beforeAll(async () => {
-//     await exec(NPX_NYC_COMMAND('services'));
-//   });
+describe('12 - Escreva testes para seus services', () => {
+  beforeAll(async () => {
+    await exec(NPX_NYC_COMMAND('services'));
+  });
 
-//   afterAll(async () => {
-//     await exec('rm -rf coverage .nyc_output');
-//   });
+  afterAll(async () => {
+    await exec('rm -rf coverage .nyc_output');
+  });
 
-//   it('Será validado que cobertura total das linhas dos arquivos na pasta `services` é maior ou igual a 80%', async () => {
-//     const coverageResults = await readCoverageFile();
-//     expect(coverageResults.total.lines.pct).toBeGreaterThanOrEqual(80);
-//   });
-// });
+  it('Será validado que cobertura total das linhas dos arquivos na pasta `services` é maior ou igual a 80%', async () => {
+    const coverageResults = await readCoverageFile();
+    expect(coverageResults.total.lines.pct).toBeGreaterThanOrEqual(80);
+  });
+});
 
-// describe('13 - Escreva testes para seus controllers', () => {
-//   beforeAll(async () => {
-//     await exec(NPX_NYC_COMMAND('controllers'));
-//   });
+describe('13 - Escreva testes para seus controllers', () => {
+  beforeAll(async () => {
+    await exec(NPX_NYC_COMMAND('controllers'));
+  });
 
-//   afterAll(async () => {
-//     await exec('rm -rf coverage .nyc_output');
-//   });
+  afterAll(async () => {
+    await exec('rm -rf coverage .nyc_output');
+  });
 
-//   it('Será validado que cobertura total das linhas dos arquivos na pasta `controllers` é maior ou igual a 80%', async () => {
-//     const coverageResults = await readCoverageFile();
-//     expect(coverageResults.total.lines.pct).toBeGreaterThanOrEqual(80);
-//   });
-// });
+  it('Será validado que cobertura total das linhas dos arquivos na pasta `controllers` é maior ou igual a 80%', async () => {
+    const coverageResults = await readCoverageFile();
+    expect(coverageResults.total.lines.pct).toBeGreaterThanOrEqual(80);
+  });
+});

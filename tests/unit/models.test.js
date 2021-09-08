@@ -189,7 +189,7 @@ describe('test sales model', () => {
     });
 
   });
-  
+
   describe('get all sales', () => {
     describe('when get is successful', () => {
       it('should return an array with all sales', async () => {
@@ -214,6 +214,35 @@ describe('test sales model', () => {
         console.log(allSales);
         expect(allSales).to.be.a('array');
 
+      });
+    });
+  });
+
+  describe('get sale by id', () => {
+    describe('when get is successful', () => {
+      it('should return an object', async () => {
+        const product1 = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+
+        const product2 = await productsModel
+          .createProduct(payloadProduct2.name, payloadProduct2.quantity);
+
+        const payloadSale = [
+          {
+            '_id': product1._id,
+            'quantity': 2
+          }, 
+          {'_id': product2._id,
+            'quantity': 5}
+        ];
+        const sale = await salesModel.createSale(payloadSale);
+        const { _id } = sale.ops[0];
+        const result = await salesModel.getSaleById(_id);
+        console.log(result);
+        expect(result).to.be.a('object');
+        result.itensSold.forEach((product) => {
+          expect(product).to.have.all.keys('_id', 'quantity');
+        });
       });
     });
   });

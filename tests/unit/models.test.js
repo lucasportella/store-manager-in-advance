@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const productsModel = require('../../models/productsModel');
@@ -67,7 +67,7 @@ describe('test model layer', () => {
   });
 
   describe('find product by id', () => {
-    describe('when id is found', async () => {
+    describe('when id is found', () => {
       const payloadProduct = {
         'name': 'steak',
         'quantity': 50
@@ -90,6 +90,33 @@ describe('test model layer', () => {
       });
     });
 
+  });
+
+  describe('update product', () => {
+    describe('when update is successful', () => {
+      const payloadProduct = {
+        'name': 'rice',
+        'quantity': 30
+      };
+
+      const payloadUpdate = {
+        'name': 'rice',
+        'quantity': 20,
+      };
+      const quantityBeforeUpdate = 30;
+      const quantityAfterUpdate = 20;
+
+      it('returns object with it\'s properties', async () => {
+        const { _id, quantity } = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+        expect(quantity).to.equal(quantityBeforeUpdate);
+        const result = await productsModel
+          .updateProduct(payloadUpdate.name, payloadUpdate.quantity, _id);
+        expect(result).to.be.a('object');
+        expect(result).to.have.all.keys('_id', 'name', 'quantity');
+        expect(result.quantity).to.equal(quantityAfterUpdate);
+      });
+    });
   });
 
 

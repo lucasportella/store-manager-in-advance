@@ -23,9 +23,10 @@ const implementStub = async () => before( async () => {
 
 });
 
+implementStub(); // didnt understand why it doesnt restore if i put this function on every describe block
+
 describe('test product model', () => {
 
-  implementStub();
 
   describe('Create new Product', () => {
     const payloadProduct = {
@@ -147,21 +148,20 @@ describe('test product model', () => {
 
 describe('test sales model', () => {
 
-  // implementStub();
+  const payloadProduct =     {
+    'name': 'cookie',
+    'quantity': 10
+  };
+
+  const payloadProduct2 =     {
+    'name': 'candy',
+    'quantity': 66
+  };
 
   describe('create sale', () => {
     describe('when creation is successful' ,() => {
       
       it('returns an array', async () => {
-        const payloadProduct =     {
-          'name': 'cookie',
-          'quantity': 10
-        };
-
-        const payloadProduct2 =     {
-          'name': 'candy',
-          'quantity': 66
-        };
         
         const product1 = await productsModel
           .createProduct(payloadProduct.name, payloadProduct.quantity);
@@ -180,12 +180,40 @@ describe('test sales model', () => {
         ];
 
         const result = await salesModel.createSale(payloadSale);
-        console.log(result.ops[0].itensSold[0]);
         expect(result.ops).to.be.a('array');
         expect(result.ops[0]._id).to.be.be.a('object');
         expect(result.ops[0].itensSold).to.be.a('array');
         expect(result.ops[0].itensSold[0]).to.be.a('object');
         expect(result.ops[0].itensSold[0]).to.have.all.keys('_id', 'quantity');
+      });
+    });
+
+  });
+  
+  describe('get all sales', () => {
+    describe('when get is successful', () => {
+      it('should return an array with all sales', async () => {
+        const product1 = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+
+        const product2 = await productsModel
+          .createProduct(payloadProduct2.name, payloadProduct2.quantity);
+
+
+        const payloadSale = [
+          {
+            '_id': product1._id,
+            'quantity': 2
+          }, 
+          {'_id': product2._id,
+            'quantity': 5}
+        ];
+
+        await salesModel.createSale(payloadSale);
+        const allSales = await salesModel.getAllSales();
+        console.log(allSales);
+        expect(allSales).to.be.a('array');
+
       });
     });
   });

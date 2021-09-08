@@ -1,31 +1,32 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const productsModel = require('../../models/productsModel');
+const salesModel = require('../../models/salesModel');
 
-describe('test model layer', () => {
+const implementStub = async () => before( async () => {
+  const DBserver = new MongoMemoryServer();
+  const URLMock = await DBserver.getUri();
 
-  before( async () => {
-    const DBserver = new MongoMemoryServer();
-    const URLMock = await DBserver.getUri();
-
-    const connectionMock = await MongoClient.connect(URLMock, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-
-    sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-
-    after(() => {
-      MongoClient.connect.restore();
-    });
-
+  const connectionMock = await MongoClient.connect(URLMock, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   });
 
-  // PRODUCTS URL TESTS
-  
+  sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+  after(() => {
+    MongoClient.connect.restore();
+  });
+
+});
+
+describe('test product model', () => {
+
+  implementStub();
+
   describe('Create new Product', () => {
     const payloadProduct = {
       'name': 'tomatoes',
@@ -140,6 +141,53 @@ describe('test model layer', () => {
     });
   });
 
-  // SALES URL TESTS
 
+  
+});
+
+describe('test sales model', () => {
+
+  // implementStub();
+
+  describe('create sale', () => {
+    describe('when creation is successful' ,() => {
+      
+      it('returns an array', async () => {
+        const payloadProduct =     {
+          'name': 'cookie',
+          'quantity': 10
+        };
+
+        const payloadProduct2 =     {
+          'name': 'candy',
+          'quantity': 66
+        };
+        
+        const product1 = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+
+        const product2 = await productsModel
+          .createProduct(payloadProduct2.name, payloadProduct2.quantity);
+
+
+        const payloadSale = [
+          {
+            '_id': product1._id,
+            'quantity': 2
+          }, 
+          {'_id': product2._id,
+            'quantity': 5}
+        ];
+
+        const result = await salesModel.createSale(payloadSale);
+        console.log(result.ops[0].itensSold[0]);
+        expect(result.ops).to.be.a('array');
+        expect(result.ops[0]._id).to.be.be.a('object');
+        expect(result.ops[0].itensSold).to.be.a('array');
+        expect(result.ops[0].itensSold[0]).to.be.a('object');
+        expect(result.ops[0].itensSold[0]).to.have.all.keys('_id', 'quantity');
+      });
+    });
+  });
+  
 });

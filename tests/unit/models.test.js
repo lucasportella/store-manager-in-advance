@@ -23,6 +23,8 @@ describe('test model layer', () => {
     });
 
   });
+
+  // PRODUCTS URL TESTS
   
   describe('Create new Product', () => {
     const payloadProduct = {
@@ -93,16 +95,16 @@ describe('test model layer', () => {
   });
 
   describe('update product', () => {
-    describe('when update is successful', () => {
-      const payloadProduct = {
-        'name': 'rice',
-        'quantity': 30
-      };
+    const payloadProduct = {
+      'name': 'rice',
+      'quantity': 30
+    };
 
-      const payloadUpdate = {
-        'name': 'rice',
-        'quantity': 20,
-      };
+    const payloadUpdate = {
+      'name': 'rice',
+      'quantity': 20,
+    };
+    describe('when update is successful', () => {
       const quantityBeforeUpdate = 30;
       const quantityAfterUpdate = 20;
 
@@ -119,6 +121,25 @@ describe('test model layer', () => {
     });
   });
 
+  describe('delete product', () => {
+    describe('when delete is successful', () => {
+      const payloadProduct = {
+        'name': 'rice',
+        'quantity': 30
+      };
+      it('should not exist the product', async () => {
+        const { _id } = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+        const product = await productsModel.getById(_id);
+        expect(product).to.be.a('object');
+        expect(product).to.have.all.keys('_id', 'name', 'quantity');
+        await productsModel.deleteProduct(_id);
+        const productAfterDelete = await productsModel.getById(_id);
+        expect(productAfterDelete).to.equal(null);
+      });
+    });
+  });
 
+  // SALES URL TESTS
 
 });

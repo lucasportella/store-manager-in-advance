@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const productsModel = require('../../models/productsModel');
@@ -93,24 +93,47 @@ describe('test model layer', () => {
   });
 
   describe('update product', () => {
-    describe('when update is successful', () => {
-      const payloadProduct = {
-        'name': 'rice',
-        'quantity': 30
-      };
+    const payloadProduct = {
+      'name': 'rice',
+      'quantity': 30
+    };
 
-      const payloadUpdate = {
-        'name': 'rice',
-        'quantity': 20,
-      };
+    const payloadUpdate = {
+      'name': 'rice',
+      'quantity': 20,
+    };
+    describe('when update is successful', () => {
+      const quantityBeforeUpdate = 30;
+      const quantityAfterUpdate = 20;
 
       it('returns object with it\'s properties', async () => {
-        const { _id } = await productsModel
+        const { _id, quantity } = await productsModel
           .createProduct(payloadProduct.name, payloadProduct.quantity);
+        expect(quantity).to.equal(quantityBeforeUpdate);
         const result = await productsModel
           .updateProduct(payloadUpdate.name, payloadUpdate.quantity, _id);
         expect(result).to.be.a('object');
         expect(result).to.have.all.keys('_id', 'name', 'quantity');
+        expect(result.quantity).to.equal(quantityAfterUpdate);
+      });
+    });
+  });
+
+  describe('delete product', () => {
+    describe('when delete is successful', () => {
+      const payloadProduct = {
+        'name': 'rice',
+        'quantity': 30
+      };
+      it('should not exist the product', async () => {
+        const { _id } = await productsModel
+          .createProduct(payloadProduct.name, payloadProduct.quantity);
+        const product = await productsModel.getById(_id);
+        expect(product).to.be.a('object');
+        expect(product).to.have.all.keys('_id', 'name', 'quantity');
+        await productsModel.deleteProduct(_id);
+        const productAfterDelete = await productsModel.getById(_id);
+        expect(productAfterDelete).to.equal(null);
       });
     });
   });

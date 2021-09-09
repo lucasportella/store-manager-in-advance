@@ -6,26 +6,24 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const productsModel = require('../../models/productsModel');
 const salesModel = require('../../models/salesModel');
 
-const implementStub = async () => before( async () => {
-  const DBserver = new MongoMemoryServer();
-  const URLMock = await DBserver.getUri();
 
-  const connectionMock = await MongoClient.connect(URLMock, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+
+describe('test product model', () => {
+  before( async () => {
+    const DBserver = new MongoMemoryServer();
+    const URLMock = await DBserver.getUri();
+  
+    const connectionMock = await MongoClient.connect(URLMock, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  
+    sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+  
   });
-
-  sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-
   after(() => {
     MongoClient.connect.restore();
   });
-
-});
-
-implementStub(); // didnt understand why it doesnt restore if i put this function on every describe block
-
-describe('test product model', () => {
 
 
   describe('Create new Product', () => {
@@ -147,6 +145,22 @@ describe('test product model', () => {
 });
 
 describe('test sales model', () => {
+  before( async () => {
+    const DBserver = new MongoMemoryServer();
+    const URLMock = await DBserver.getUri();
+  
+    const connectionMock = await MongoClient.connect(URLMock, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  
+    sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+  
+  });
+  after(() => {
+    MongoClient.connect.restore();
+  });
+
 
   const payloadProduct =     {
     'name': 'cookie',
@@ -211,7 +225,7 @@ describe('test sales model', () => {
 
         await salesModel.createSale(payloadSale);
         const allSales = await salesModel.getAllSales();
-        console.log(allSales);
+
         expect(allSales).to.be.a('array');
 
       });
@@ -238,7 +252,6 @@ describe('test sales model', () => {
         const sale = await salesModel.createSale(payloadSale);
         const { _id } = sale.ops[0];
         const result = await salesModel.getSaleById(_id);
-        console.log(result);
         expect(result).to.be.a('object');
         result.itensSold.forEach((product) => {
           expect(product).to.have.all.keys('_id', 'quantity');
